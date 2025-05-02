@@ -89,7 +89,7 @@ interface Course {
   name: string;
   students: Student[];
   instructor: string;
-  maxStudents: Number;
+  maxStudents: number;
 }
 
 // Implement a CourseManager class that:
@@ -106,14 +106,14 @@ class CourseManager {
     return this.courses;
   }
 
-  getCourseById(id: Course["id"]): Course[] {
-    return this.courses.filter((obj) => obj.id === id);
+  getCourseById(id: Course["id"]) {
+    return this.courses.find((obj) => obj.id === id);
   }
   removeCourseById(id: Course["id"]): Course[] | null {
     let findIndexOfTheCourse = this.courses.findIndex(
       (course) => course.id === id
     );
-    if (findIndexOfTheCourse) {
+    if (findIndexOfTheCourse !== -1) {
       this.courses.splice(findIndexOfTheCourse, 1);
       return this.getAllCourses();
     } else {
