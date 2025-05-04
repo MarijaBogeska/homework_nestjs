@@ -4,7 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { readFile, writeFile } from 'node:fs/promises';
-import { CreateProduct, Product, UpdateProduct } from './interfaces/product.interface';
+import {
+  CreateProduct,
+  Product,
+  UpdateProduct,
+} from './interfaces/product.interface';
 import { join } from 'node:path';
 import { v4 as uuid } from 'uuid';
 
@@ -40,34 +44,35 @@ export class ProductsService {
     const foundProduct = products.find(
       (product) => product.title === body.title,
     );
+    if (foundProduct) throw new ConflictException('product already exists');
+
     const createdProduct = {
       id: uuid(),
       ...body,
     };
-    if (foundProduct) throw new ConflictException('product already exists');
     products.push(createdProduct);
     await this.saveProducts(products);
     return createdProduct;
   }
-  
-  async updateProduct(id: Product["id"],body: UpdateProduct) {
+
+  async updateProduct(id: Product['id'], body: UpdateProduct) {
     const products = await this.getAllProducts();
-    const foundProduct = products.some(product => product.id === id);
-    if(!foundProduct) throw new NotFoundException('product not found');
-    const updatedProducts= products.map(product=>{
-      if(product.id === id){
-        return {...product, ...body};
+    const foundProduct = products.find((product) => product.id === id);
+    if (!foundProduct) throw new NotFoundException('product not found');
+    const updatedProducts = products.map((product) => {
+      if (product.id === id) {
+        return { ...product, ...body };
       }
       return product;
     });
     await this.saveProducts(updatedProducts);
   }
 
-  async deleteProduct (id: Product['id']) {
+  async deleteProduct(id: Product['id']) {
     const products = await this.getAllProducts();
-    const foundProduct = products.some(product => product.id === id);
-    if(!foundProduct) throw new NotFoundException('product not found');
-    const filteredProducts = products.filter(product=> product.id !== id);
+    const foundProduct = products.find((product) => product.id === id);
+    if (!foundProduct) throw new NotFoundException('product not found');
+    const filteredProducts = products.filter((product) => product.id !== id);
     await this.saveProducts(filteredProducts);
   }
 }
