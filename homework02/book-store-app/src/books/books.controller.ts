@@ -48,7 +48,7 @@ export class BooksController {
 
   @HttpCode(204)
   @Delete(':id')
-  deleteProduct(@Param('id') id: string) {
+  deleteBook(@Param('id') id: string) {
     return this.bookService.deleteBook(id);
   }
 }
