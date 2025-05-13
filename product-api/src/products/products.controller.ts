@@ -1,32 +1,54 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { CreateProduct, UpdateProduct } from './interfaces/product.interface';
+import { CreateProduct } from './dtos/create-product.dto';
+import { NotFoundError } from 'rxjs';
+import { UpdateProductDto } from './dtos/update-product.dto';
 
 @Controller('products')
-export class ProductController {
-  constructor(private productsService: ProductsService) {}
+export class ProductsController {
+  constructor(private productService: ProductsService) {}
+
   @Get()
-  getAllProducts() {
-    return this.productsService.getAllProducts();
+  findAll() {
+    return this.productService.findAll();
   }
 
   @Get(':id')
-  getProductById(@Param('id') productId: string) {
-    return this.productsService.getProductById(productId);
+  findById(@Param('id') id: string) {
+    if (Number.isNaN(Number(id)))
+      throw new BadRequestException('invalid id only numbers allowed');
+    return this.productService.findById(Number(id));
   }
 
   @Post()
-  createProduct(@Body() body: CreateProduct) {
-    return this.productsService.createProduct(body);
+  create(@Body() body: CreateProduct) {
+    return this.productService.create(body);
   }
 
+  @HttpCode(204)
   @Patch(':id')
-  updateProduct(@Param('id') id:string , @Body() body: UpdateProduct){
-    return this.productsService.updateProduct(id,body);
+  update(@Param('id') id: string, @Body() updateData: UpdateProductDto) {
+    if (Number.isNaN(Number(id)))
+      throw new BadRequestException('invalid id only numbers allowed');
+    return this.productService.update(Number(id), updateData);
   }
 
+  @HttpCode(204)
   @Delete(':id')
-  deleteProduct(@Param('id') id:string){
-   return this.productsService.deleteProduct(id);
+  delete(@Param('id') id: string) {
+    if (Number.isNaN(Number(id)))
+      throw new BadRequestException('invalid id only numbers allowed');
+    return this.productService.delete(Number(id));
   }
 }

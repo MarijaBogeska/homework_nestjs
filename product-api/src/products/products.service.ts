@@ -1,78 +1,44 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { readFile, writeFile } from 'node:fs/promises';
-import {
-  CreateProduct,
-  Product,
-  UpdateProduct,
-} from './interfaces/product.interface';
-import { join } from 'node:path';
-import { v4 as uuid } from 'uuid';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Product } from './entities/product.entity';
+import { Repository } from 'typeorm';
+import { CreateProduct } from './dtos/create-product.dto';
+import { UpdateProductDto } from './dtos/update-product.dto';
 
 @Injectable()
 export class ProductsService {
-  private PRODUCTS_PATH = join(
-    process.cwd(),
-    'src',
-    'products',
-    'data',
-    'products.json',
-  );
+  constructor(
+    @InjectRepository(Product) private productsRepo: Repository<Product>,
+  ) {}
 
-  async getAllProducts() {
-    const productsJSON = await readFile(this.PRODUCTS_PATH, 'utf-8');
-    const products = JSON.parse(productsJSON) as Product[];
-    return products;
+  async findAll() {
+    return this.productsRepo.find();
   }
 
-  async getProductById(id: string) {
-    const products = await this.getAllProducts();
-    const foundProduct = products.find((product) => product.id === id);
+  async findById(id: number) {
+    const foundProduct = await this.productsRepo.findOneBy({ id });
 
     if (!foundProduct) throw new NotFoundException('product not found');
+
     return foundProduct;
   }
-  // POST, PATCH и DELETE
-  async saveProducts(products: Product[]) {
-    await writeFile(this.PRODUCTS_PATH, JSON.stringify(products, null, 2));
-  }
-  async createProduct(body: CreateProduct) {
-    const products = await this.getAllProducts();
-    const foundProduct = products.find(
-      (product) => product.title === body.title,
-    );
-    if (foundProduct) throw new ConflictException('product already exists');
 
-    const createdProduct = {
-      id: uuid(),
-      ...body,
-    };
-    products.push(createdProduct);
-    await this.saveProducts(products);
-    return createdProduct;
+  async create(createData: CreateProduct) {
+    return this.productsRepo.save(createData);
   }
 
-  async updateProduct(id: Product['id'], body: UpdateProduct) {
-    const products = await this.getAllProducts();
-    const foundProduct = products.find((product) => product.id === id);
+  async update(id: number, body: UpdateProductDto) {
+    const foundProduct = await this.findById(id);
     if (!foundProduct) throw new NotFoundException('product not found');
-    const updatedProducts = products.map((product) => {
-      if (product.id === id) {
-        return { ...product, ...body };
-      }
-      return product;
-    });
-    await this.saveProducts(updatedProducts);
+
+    Object.assign(foundProduct, body);
+    await this.productsRepo.save(foundProduct);
   }
 
-  async deleteProduct(id: Product['id']) {
-    const products = await this.getAllProducts();
-    const foundProduct = products.find((product) => product.id === id);
+  async delete(id: number) {
+    const foundProduct = await this.findById(id);
     if (!foundProduct) throw new NotFoundException('product not found');
-    const filteredProducts = products.filter((product) => product.id !== id);
-    await this.saveProducts(filteredProducts);
+
+    await this.productsRepo.remove(foundProduct);
   }
 }
