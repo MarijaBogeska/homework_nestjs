@@ -57,19 +57,19 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/api/rooms/:roomNumber",
+					"raw": "{{url}}/api/rooms/:id",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
 						"rooms",
-						":roomNumber"
+						":id"
 					],
 					"variable": [
 						{
-							"key": "roomNumber",
-							"value": "1"
+							"key": "id",
+							"value": "ef8b0781-9cc5-48e8-9b3c-cb44c8b7f602"
 						}
 					]
 				}
@@ -82,19 +82,19 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/api/rooms/:roomNumber",
+					"raw": "{{url}}/api/rooms/:id",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
 						"rooms",
-						":roomNumber"
+						":id"
 					],
 					"variable": [
 						{
-							"key": "roomNumber",
-							"value": "1"
+							"key": "id",
+							"value": ""
 						}
 					]
 				}
@@ -116,19 +116,19 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/api/rooms/:roomNumber",
+					"raw": "{{url}}/api/rooms/:id",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"api",
 						"rooms",
-						":roomNumber"
+						":id"
 					],
 					"variable": [
 						{
-							"key": "roomNumber",
-							"value": "1"
+							"key": "id",
+							"value": ""
 						}
 					]
 				}

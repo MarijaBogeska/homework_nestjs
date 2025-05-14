@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsEnum,
@@ -12,7 +12,7 @@ import { RoomTypes } from '../entities/room.entity';
 export class FiltersRoomDto {
   // Search by room number
   @IsOptional()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Number of the room',
     example: 22,
     minimum: 1,
@@ -25,14 +25,9 @@ export class FiltersRoomDto {
 
   // Filter by type
   @IsOptional()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Room type',
-    examples: [
-      RoomTypes.SINGLE,
-      RoomTypes.DOUBLE,
-      RoomTypes.SUITE,
-      RoomTypes.DELUXE,
-    ],
+    enum: RoomTypes,
   })
   @IsEnum(RoomTypes)
   type: RoomTypes;
@@ -42,21 +37,21 @@ export class FiltersRoomDto {
   @IsNumber()
   @Min(50)
   @Max(1000)
-  @ApiProperty({ example: 60, description: 'Minimum room price' })
+  @ApiPropertyOptional({ example: 60, description: 'Minimum room price' })
   minPrice?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(50)
   @Max(1000)
-  @ApiProperty({ example: 200, description: 'Maximum room price' })
+  @ApiPropertyOptional({ example: 200, description: 'Maximum room price' })
   maxPrice?: number;
 
   // Filter by availability
   @IsOptional()
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Room availability',
-    examples: [true, false],
+    enum: [true, false],
   })
   @IsBoolean()
   isAvailable: boolean;

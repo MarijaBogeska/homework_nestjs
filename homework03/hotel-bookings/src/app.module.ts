@@ -3,19 +3,25 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoomsModule } from './rooms/rooms.module';
-import { Room } from './rooms/entities/room.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'hotel-bookings',
-      entities: [Room],
-      synchronize: true,
+    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return {
+          type: 'postgres',
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USER'),
+          password: configService.get('DB_PASS'),
+          database: configService.get('DB_NAME'),
+          synchronize: configService.get('ENVIRONMENT') === 'DEV',
+          autoLoadEntities: true,
+        };
+      },
     }),
     RoomsModule,
   ],

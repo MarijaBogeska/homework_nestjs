@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, Max, Min } from 'class-validator';
 import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum RoomTypes {
@@ -10,13 +9,17 @@ export enum RoomTypes {
 }
 @Entity()
 export class Room {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @ApiProperty({
     description: 'Number of the room',
     example: 22,
     minimum: 1,
     maximum: 999,
+    type: 'number',
   })
-  @PrimaryColumn({ unique: true })
+  @Column({ unique: true })
   roomNumber: number;
 
   @ApiProperty({

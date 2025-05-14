@@ -34,15 +34,15 @@ export class RoomsService {
       query.andWhere('room.price >= :minPrice', { minPrice });
     }
     // Filter by availability
-    if (isAvailable) {
+    if (typeof isAvailable === 'boolean') {
       query.andWhere('room.isAvailable = :isAvailable', { isAvailable });
     }
     return await query.getMany();
   }
 
-  // GET ROOM BY ROOM NUMBER
-  async getByRoomNum(roomNumber: number) {
-    const room = await this.roomsRepo.findOneBy({ roomNumber: roomNumber });
+  // GET ROOM BY ID
+  async getById(id: string) {
+    const room = await this.roomsRepo.findOneBy({ id });
     if (!room) throw new NotFoundException('room does not exists');
     return room;
   }
@@ -57,8 +57,8 @@ export class RoomsService {
   }
 
   //   UPDATE ROOM
-  async update(roomNum: number, body: UpdateRoomDto) {
-    const foundRoom = await this.getByRoomNum(roomNum);
+  async update(id: string, body: UpdateRoomDto) {
+    const foundRoom = await this.getById(id);
     if (!foundRoom) throw new NotFoundException('room does not exists');
     Object.assign(foundRoom, body);
 
@@ -66,8 +66,8 @@ export class RoomsService {
   }
 
   //   DELETE ROOM
-  async delete(roomNum: number) {
-    const foundRoom = await this.getByRoomNum(roomNum);
+  async delete(id: string) {
+    const foundRoom = await this.getById(id);
     if (!foundRoom) throw new NotFoundException('room does not exists');
     await this.roomsRepo.remove(foundRoom);
   }
