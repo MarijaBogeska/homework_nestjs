@@ -94,7 +94,7 @@ export class MoviesController {
     return this.moviesService.update(id, updateMovieDto);
   }
 
-  @ApiOperation({ summary: 'Endpoint that updates a movie' })
+  @ApiOperation({ summary: 'Endpoint that deletes a movie' })
   @ApiBadRequestResponse({ description: 'Invalid movie ID format' })
   @ApiNotFoundResponse({ description: 'Movie not found' })
   @ApiResponse({ status: 204, description: 'Movie deleted successfully' })

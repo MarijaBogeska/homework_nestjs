@@ -77,20 +77,4 @@ export class CreateMovieDto {
   @IsString()
   @Length(7, 2000)
   poster_url?: string;
-
-  @ApiProperty({
-    description: 'Movie created at',
-    example: '2025-01-01',
-    required: false,
-  })
-  @IsDateString()
-  created_at?: string;
-
-  @ApiProperty({
-    description: 'Movie updated at',
-    example: '2025-01-01',
-    required: false,
-  })
-  @IsDateString()
-  updated_at?: string;
 }

@@ -21,12 +21,7 @@ export class MoviesService {
 
   async create(createMovieDto: CreateMovieDto) {
     try {
-      const { created_at, updated_at, ...createData } = createMovieDto;
-      const newMovie = this.movieRepo.create({
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        ...createData,
-      });
+      const newMovie = this.movieRepo.create(createMovieDto);
       await this.movieRepo.save(newMovie);
       return newMovie;
     } catch (error) {
@@ -50,8 +45,8 @@ export class MoviesService {
     } = movieQuery ?? {};
     const query = this.movieRepo.createQueryBuilder('movie');
     // FILTERS
-    if (genre) {
-      query.andWhere(':genre = ANY(movie.genres)', { genre });
+    if (genre && genre.length > 0) {
+      query.andWhere('movie.genres && :genres', { genres: genre });
     }
     if (title) {
       query.andWhere('LOWER(movie.title) = LOWER(:title)', { title });

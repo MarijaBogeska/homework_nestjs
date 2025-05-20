@@ -80,14 +80,18 @@ export class Movie {
     example: '2025-01-01',
     required: false,
   })
-  @Column({ type: 'timestamp without time zone', default: '2025-01-01' })
-  created_at?: string;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 
   @ApiProperty({
     description: 'Movie updated at',
     example: '2025-01-01',
     required: false,
   })
-  @Column({ type: 'timestamp without time zone', default: '2025-01-01' })
-  updated_at?: string;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updated_at: Date;
 }
