@@ -29,7 +29,7 @@ export class MoviesService {
         throw new BadRequestException('Movie already exists');
       }
 
-      throw new InternalServerErrorException(error.messsage);
+      throw new InternalServerErrorException(error.message);
     }
   }
 
@@ -79,7 +79,7 @@ export class MoviesService {
       if (error.code === INVALID_INPUT_CODE) {
         throw new BadRequestException('Invalid id');
       }
-      throw new NotFoundException(error.messsage);
+      throw new NotFoundException(error.message);
     }
   }
 
