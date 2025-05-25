@@ -106,18 +106,16 @@ export class Movie {
   updated_at: Date;
 
   @ApiProperty({
-    description: 'Movie director',
-    example: 'J.J. Abrams',
+    description: 'Movie director id',
     type: 'string',
   })
   @ManyToOne(() => Director, (director) => director.movies)
   director: Director;
 
   @ApiProperty({
-    description: 'Movie actors full names',
-    examples: ['Pyotr Fyodorov', 'Nikolay Komlev'],
+    description: 'Movie actors ids',
   })
   @ManyToMany(() => Actor, (actor) => actor.movies)
-  @JoinTable()
+  @JoinTable({ name: 'movie_actors' })
   actors: Actor[];
 }

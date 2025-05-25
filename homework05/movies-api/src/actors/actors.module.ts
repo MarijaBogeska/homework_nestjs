@@ -10,5 +10,6 @@ import { DirectorsModule } from 'src/directors/directors.module';
   imports: [TypeOrmModule.forFeature([Actor]), ],
   controllers: [ActorsController],
   providers: [ActorsService],
+  exports: [ActorsService]
 })
 export class ActorsModule {}

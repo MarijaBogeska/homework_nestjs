@@ -86,14 +86,13 @@ export class CreateMovieDto {
     type: 'string',
   })
   @IsString()
-  @Length(3, 30)
   director: string;
 
-  // @ApiProperty({
-  //   description: 'Movie actors full names',
-  //   examples: ['Pyotr Fyodorov', 'Nikolay Komlev'],
-  // })
-  // @IsArray()
-  // @IsString({ each: true })
-  // actors: string[];
+  @ApiProperty({
+    description: 'Movie actors full names',
+    examples: ['Pyotr Fyodorov', 'Nikolay Komlev'],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  actors: string[];
 }

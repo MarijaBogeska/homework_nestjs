@@ -11,29 +11,40 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './entities/movie.entity';
 import { Repository } from 'typeorm';
 import { QueryMoviesDto } from './dto/query-movies.dto';
-
-const DUPLICATE_CODE = '23505';
-const INVALID_INPUT_CODE = '22P02';
+import { PG_ERRORS } from 'src/errors/sqlErrors';
+import { ActorsService } from 'src/actors/actors.service';
+import { DirectorsService } from 'src/directors/directors.service';
 
 @Injectable()
 export class MoviesService {
-  constructor(@InjectRepository(Movie) private movieRepo: Repository<Movie>) {}
+  constructor(
+    @InjectRepository(Movie) private movieRepo: Repository<Movie>,
+    private actorsService: ActorsService,
+    private directorsService: DirectorsService,
+  ) {}
 
   async create(createMovieDto: CreateMovieDto) {
     try {
-      const newMovie = this.movieRepo.save({
-        ...createMovieDto,
-        director: {
-          id: createMovieDto.director,
-        }
+      const { actors, director, ...movieDto } = createMovieDto;
+      let mappedActors = await Promise.all(
+        actors.map(async (actorId) => {
+          await this.actorsService.findOne(actorId);
+          return { id: actorId };
+        }),
+      );
+      await this.directorsService.findOne(director);
+      const newMovie = await this.movieRepo.save({
+        ...movieDto,
+        director: { id: director },
+        actors: mappedActors,
       });
       return newMovie;
     } catch (error) {
-      if (error.code === DUPLICATE_CODE) {
+      if (error.code === PG_ERRORS.DUPLICATE_CODE) {
         throw new BadRequestException('Movie already exists');
       }
 
-      throw new InternalServerErrorException(error.message);
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -78,9 +89,10 @@ export class MoviesService {
   async findOne(id: string) {
     try {
       const foundMovie = await this.movieRepo.findOneBy({ id });
+      if (!foundMovie) throw new NotFoundException('movie does not exists');
       return foundMovie;
     } catch (error) {
-      if (error.code === INVALID_INPUT_CODE) {
+      if (error.code === PG_ERRORS.INVALID_INPUT_CODE) {
         throw new BadRequestException('Invalid id');
       }
       throw new NotFoundException(error.message);

@@ -21,7 +21,7 @@ export class DirectorsService {
 
   async create(createDirectorDto: CreateDirectorDto) {
     try {
-      const director = this.directorRepo.save(createDirectorDto);
+      const director = await this.directorRepo.save(createDirectorDto);
       return director;
     } catch (error) {
       if (error.code === DUPLICATE_CODE) {
@@ -36,12 +36,11 @@ export class DirectorsService {
     return this.directorRepo.find();
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     try {
-      const foundDirector = this.directorRepo.findOneBy({ id });
-      if (!foundDirector) {
-        throw new NotFoundException('Director does not exists');
-      }
+      const foundDirector = await this.directorRepo.findOneBy({ id });
+      if (!foundDirector)
+        throw new NotFoundException('director does not exists');
       return foundDirector;
     } catch (error) {
       if (error.code === INVALID_INPUT_CODE) {

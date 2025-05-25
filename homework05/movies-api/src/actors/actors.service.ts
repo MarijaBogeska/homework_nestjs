@@ -9,9 +9,8 @@ import { Repository } from 'typeorm';
 import { Actor } from './entities/actor.entity';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
+import { PG_ERRORS } from 'src/errors/sqlErrors';
 
-const DUPLICATE_CODE = '23505';
-const INVALID_INPUT_CODE = '22P02';
 
 @Injectable()
 export class ActorsService {
@@ -19,10 +18,10 @@ export class ActorsService {
 
   async create(createActorDto: CreateActorDto) {
     try {
-      const Actor = this.ActorRepo.save(createActorDto);
-      return Actor;
+      const actor = await this.ActorRepo.save(createActorDto);
+      return actor;
     } catch (error) {
-      if (error.code === DUPLICATE_CODE) {
+      if (error.code === PG_ERRORS.DUPLICATE_CODE) {
         throw new BadRequestException('Actor already exists');
       }
 
@@ -34,18 +33,18 @@ export class ActorsService {
     return this.ActorRepo.find();
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     try {
-      const foundActor = this.ActorRepo.findOneBy({ id });
+      const foundActor = await this.ActorRepo.findOneBy({ id });
       if (!foundActor) {
         throw new NotFoundException('Actor does not exists');
       }
       return foundActor;
     } catch (error) {
-      if (error.code === INVALID_INPUT_CODE) {
+      if (error.code === PG_ERRORS.INVALID_INPUT_CODE) {
         throw new BadRequestException('Invalid id');
       }
-      throw new NotFoundException(error.message);
+      throw new InternalServerErrorException(error.message);
     }
   }
 
@@ -62,7 +61,7 @@ export class ActorsService {
       if (!foundActor) throw new NotFoundException('Actor does not exists');
       await this.ActorRepo.remove(foundActor);
     } catch (error) {
-      if (error.code === INVALID_INPUT_CODE) {
+      if (error.code === PG_ERRORS.INVALID_INPUT_CODE) {
         throw new BadRequestException('Invalid id');
       }
       throw new NotFoundException(error.message);
