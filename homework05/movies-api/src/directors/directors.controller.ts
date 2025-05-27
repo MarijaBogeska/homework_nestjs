@@ -15,10 +15,13 @@ import { CreateDirectorDto } from './dto/create-director.dto';
 import { UpdateDirectorDto } from './dto/update-director.dto';
 import {
   ApiBadRequestResponse,
+  ApiBody,
+  ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiParam,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Director } from './entities/director.entity';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -28,15 +31,29 @@ import { RoleType } from 'src/roles/role.enum';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Roles(RoleType.Admin)
+@ApiTags('directors')
 @Controller('directors')
 export class DirectorsController {
   constructor(private readonly directorsService: DirectorsService) {}
 
+  @ApiBody({
+    required: true,
+    type: CreateDirectorDto,
+  })
+  @ApiBadRequestResponse({ description: 'director already exists' })
+  @ApiOperation({ summary: 'Endpoint that creates a director' })
+  @ApiResponse({ status: 201, description: 'director created successfully' })
+  @HttpCode(201)
   @Post()
   create(@Body() createDirectorDto: CreateDirectorDto) {
     return this.directorsService.create(createDirectorDto);
   }
 
+  @ApiOperation({ summary: 'Endpoint that fetches all directors' })
+  @ApiInternalServerErrorResponse({
+    description: "The server couldn't fetch the directors",
+  })
+  @ApiResponse({ status: 200, description: 'directors found successfully' })
   @Roles(RoleType.User)
   @Get()
   findAll() {
@@ -64,7 +81,13 @@ export class DirectorsController {
     return this.directorsService.findOne(id);
   }
 
-  @HttpCode(200)
+  @ApiOperation({ summary: 'Endpoint that updates a director' })
+  @ApiBadRequestResponse({
+    description: 'Invalid director ID format or director data',
+  })
+  @ApiNotFoundResponse({ description: 'director not found' })
+  @ApiResponse({ status: 204, description: 'director updated successfully' })
+  @HttpCode(204)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -73,7 +96,11 @@ export class DirectorsController {
     return this.directorsService.update(id, updateDirectorDto);
   }
 
-  @HttpCode(200)
+  @ApiOperation({ summary: 'Endpoint that deletes a director' })
+  @ApiBadRequestResponse({ description: 'Invalid director ID format' })
+  @ApiNotFoundResponse({ description: 'director not found' })
+  @ApiResponse({ status: 204, description: 'director deleted successfully' })
+  @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.directorsService.remove(id);

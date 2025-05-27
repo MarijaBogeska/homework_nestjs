@@ -20,12 +20,4 @@ export class CreateActorDto {
   @IsNumber()
   @Min(1900)
   birthYear: number;
-
-  // @ApiProperty({
-  //   description: 'Films the actor acted in',
-  //   examples: ['Pilot', 'Super 8'],
-  // })
-  // @IsArray()
-  // @IsString({ each: true })
-  // movies: string[];
 }

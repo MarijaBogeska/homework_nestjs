@@ -1,192 +1,864 @@
 {
 	"info": {
 		"_postman_id": "c5dba701-11ab-4fc2-ae0d-4cff1875d5fe",
-		"name": "Movies",
+		"name": "Movies-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43059486"
 	},
 	"item": [
 		{
-			"name": "Create",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "movies",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"{{$randomProductName}}\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\r\n        \"drama\",\r\n        \"romance\"\r\n    ],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8,\r\n    \"director\": \"69e7d741-a987-43ab-9288-abed61337456\",\r\n    \"actors\": [\r\n        \"967b4c94-f826-4c1e-902b-371cae26e201\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}/api/movies",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"movies"
+							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/movies",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"movies"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "INCEPTION",
+									"disabled": true
+								},
+								{
+									"key": "genre",
+									"value": "animation",
+									"disabled": true
+								},
+								{
+									"key": "maxDuration",
+									"value": "120",
+									"disabled": true
+								},
+								{
+									"key": "minRating",
+									"value": "8.6",
+									"disabled": true
+								},
+								{
+									"key": "duration",
+									"value": "DESC",
+									"disabled": true
+								},
+								{
+									"key": "rating",
+									"value": "ASC",
+									"disabled": true
+								},
+								{
+									"key": "releaseYear",
+									"value": "DESC",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}/api/movies/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"movies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1f3b6094-38bb-43f3-9431-5cac8ab82319"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}/api/movies/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"movies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "821b4f3b-1d52-46bd-bece-6ea2bb0088b7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"A mind-bending thriller about dreams within dreams. UPDATE \"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}/api/movies/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"movies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f2bfe5fc-007e-4a44-8ee2-80378bd35f61"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDkzY2M5MS0yZTk3LTQyZTAtOGVkYS0wZjg3MWNmMmZmNDEiLCJpYXQiOjE3NDgzNzU4NTgsImV4cCI6MTc0ODM3NzA1OH0.gGwumD2Jjbmeo_fyyolcQNfQlYnohxg0TFmXwngOWwg",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
 					}
 				},
-				"url": {
-					"raw": "http://{{url}}/api/movies",
-					"protocol": "http",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"movies"
-					]
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Get All",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{url}}/api/movies",
-					"protocol": "http",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"movies"
-					],
-					"query": [
-						{
-							"key": "title",
-							"value": "INCEPTION",
-							"disabled": true
+			"name": "directors",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"{{$randomFullName}}\",\r\n    \"birthYear\": 1983\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						{
-							"key": "genre",
-							"value": "animation",
-							"disabled": true
-						},
-						{
-							"key": "maxDuration",
-							"value": "120",
-							"disabled": true
-						},
-						{
-							"key": "minRating",
-							"value": "8.6",
-							"disabled": true
-						},
-						{
-							"key": "duration",
-							"value": "DESC",
-							"disabled": true
-						},
-						{
-							"key": "rating",
-							"value": "ASC",
-							"disabled": true
-						},
-						{
-							"key": "releaseYear",
-							"value": "DESC",
-							"disabled": true
+						"url": {
+							"raw": "http://{{url}}/api/directors",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"directors"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get By Id",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://{{url}}/api/movies/:id",
-					"protocol": "http",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"movies",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "f2bfe5fc-007e-4a44-8ee2-80378bd35f61"
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/directors",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"directors"
+							]
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://{{url}}/api/movies/:id",
-					"protocol": "http",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"movies",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "134940f2-ca94-4f25-9ef3-8507010bde55"
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/directors/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"directors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}/api/directors/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"directors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3f516114-d5d5-4976-a45a-e1df19f42ae2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"Pat Ruecker\",\r\n    \"birthYear\": 1988\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}/api/directors/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"directors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3f516114-d5d5-4976-a45a-e1df19f42ae2"
+								}
+							]
+						}
+					},
+					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4ZTdhYjUxMS03MjBmLTQyMzQtYmYxZC1jZjQwZmNhNzkwMTMiLCJpYXQiOjE3NDgzNzQ5ODQsImV4cCI6MTc0ODM3NjE4NH0.UEAs7unKA1xmQcC1I4ueBsGSMSCWyfOcd0sW7kbOqDw",
+						"type": "string"
+					}
+				]
 			},
-			"response": []
-		},
-		{
-			"name": "Update",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"A mind-bending thriller about dreams within dreams. UPDATE \"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
 					}
 				},
-				"url": {
-					"raw": "http://{{url}}/api/movies/:id",
-					"protocol": "http",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"api",
-						"movies",
-						":id"
-					],
-					"variable": [
-						{
-							"key": "id",
-							"value": "f2bfe5fc-007e-4a44-8ee2-80378bd35f61"
-						}
-					]
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
+			]
+		},
+		{
+			"name": "actors",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"{{$randomFullName}}\",\r\n    \"birthYear\": 1990\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}/api/actors",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/actors",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}/api/actors/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1c850764-01cf-43ed-a6f5-0d9ca5f9f84f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}/api/actors/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9c0b6961-9a05-4ead-b988-75985edfea3d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"fullName\": \"Ms. Sonya Little\",\r\n        \"birthYear\": 1999\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}/api/actors/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"actors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f4578bde-847c-4ad6-9219-a4bb63aa8473"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4ZTdhYjUxMS03MjBmLTQyMzQtYmYxZC1jZjQwZmNhNzkwMTMiLCJpYXQiOjE3NDgzNzQ5ODQsImV4cCI6MTc0ODM3NjE4NH0.UEAs7unKA1xmQcC1I4ueBsGSMSCWyfOcd0sW7kbOqDw",
+						"type": "string"
+					}
+				]
 			},
-			"response": []
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/user",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/users",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/users/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f2bfe5fc-007e-4a44-8ee2-80378bd35f61"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Titanic\",\r\n    \"description\": \"A romance blossoms aboard the ill-fated RMS Titanic.\",\r\n    \"release_year\": 1997,\r\n    \"genres\": [\"drama\", \"romance\"],\r\n    \"duration\": 195,\r\n    \"rating\": 7.8\r\n}"
+						},
+						"url": {
+							"raw": "http://{{url}}/api/users/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "134940f2-ca94-4f25-9ef3-8507010bde55"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://{{url}}/api/users/:id",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f2bfe5fc-007e-4a44-8ee2-80378bd35f61"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test2@gmail.com\",\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"password\": \"test1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"test1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{url}}/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "refresh-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4ZTdhYjUxMS03MjBmLTQyMzQtYmYxZC1jZjQwZmNhNzkwMTMiLCJpYXQiOjE3NDgzNzQ5ODQsImV4cCI6MTc0ODk3OTc4NH0.0tzl4unaHCrItqADSKD4JPAuVHeyIKBxWW_ZFDZ6zts",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{url}}/api/auth/logout",
+							"protocol": "http",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4YzM3NDI3My1mZTdhLTQyMDctOTgyMS1kMDUyY2I4M2ZjMjAiLCJpYXQiOjE3NDgzNjkxNjgsImV4cCI6MTc0ODM3MDM2OH0.OZzLqcONANOHn2aoHQUaRmyQ_agkH5qtDjESGSwCrTU",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ZDkzY2M5MS0yZTk3LTQyZTAtOGVkYS0wZjg3MWNmMmZmNDEiLCJpYXQiOjE3NDgzNzExMzEsImV4cCI6MTc0ODM3MjMzMX0.iKDFjhhs9zcJPSUe2AHqh1fmmySTEvffZ9sjfWarGvo",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

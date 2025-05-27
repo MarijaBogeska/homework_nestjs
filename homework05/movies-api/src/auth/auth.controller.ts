@@ -11,16 +11,37 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { CredentialsDto } from './dtos/credentials.dto';
 import { Response } from 'express';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiBody({
+    required: true,
+    type: CreateUserDto,
+  })
+  @ApiBadRequestResponse({ description: 'User already exists' })
+  @ApiOperation({ summary: 'Endpoint that register a User' })
+  @ApiResponse({ status: 201 })
+  @HttpCode(201)
   @Post('register')
   registerUser(@Body() userData: CreateUserDto) {
     return this.authService.registerUser(userData);
   }
 
+  @ApiBody({
+    required: true,
+    type: CredentialsDto,
+  })
+  @ApiBadRequestResponse({ description: 'User does not exists' })
+  @ApiOperation({ summary: 'Endpoint that login a User' })
+  @ApiResponse({ status: 200 })
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async loginUser(@Body() credentials: CredentialsDto, @Res() res: Response) {
@@ -33,6 +54,9 @@ export class AuthController {
     res.json(user);
   }
 
+  @ApiBadRequestResponse({ description: 'Invalid token' })
+  @ApiOperation({ summary: 'Endpoint that refresh access token from the user' })
+  @ApiResponse({ status: 204 })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('refresh-token')
   async refreshAccessToken(
@@ -46,6 +70,9 @@ export class AuthController {
     res.sendStatus(HttpStatus.NO_CONTENT);
   }
 
+  @ApiBadRequestResponse({ description: 'Invalid token' })
+  @ApiOperation({ summary: 'Endpoint that logout the User' })
+  @ApiResponse({ status: 204 })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('logout')
   logoutUser(@Headers('refresh-token') refreshToken: string) {

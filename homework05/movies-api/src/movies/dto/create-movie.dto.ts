@@ -12,8 +12,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { Director } from 'src/directors/entities/director.entity';
-import { Actor } from 'src/actors/entities/actor.entity';
+
 
 export class CreateMovieDto {
   @ApiProperty({
