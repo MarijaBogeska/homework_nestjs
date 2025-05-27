@@ -1,8 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/roles/roles.guard';
+import { Roles } from 'src/roles/roles.decorator';
+import { RoleType } from 'src/roles/role.enum';
 
+@UseGuards(AuthGuard, RolesGuard)
+@UseInterceptors(ClassSerializerInterceptor)
+@Roles(RoleType.Admin)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

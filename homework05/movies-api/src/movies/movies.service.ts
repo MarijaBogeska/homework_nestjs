@@ -88,7 +88,13 @@ export class MoviesService {
 
   async findOne(id: string) {
     try {
-      const foundMovie = await this.movieRepo.findOneBy({ id });
+      const foundMovie = await this.movieRepo.findOne({
+        where: { id },
+        relations: {
+          director: true,
+          actors: true,
+        },
+      });
       if (!foundMovie) throw new NotFoundException('movie does not exists');
       return foundMovie;
     } catch (error) {

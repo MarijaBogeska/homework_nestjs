@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
   Length,
   Max,
   Min,
@@ -85,6 +86,7 @@ export class CreateMovieDto {
     example: 'J.J. Abrams',
     type: 'string',
   })
+  @IsUUID('4', { message: 'Invalid uuid' })
   @IsString()
   director: string;
 
@@ -92,7 +94,8 @@ export class CreateMovieDto {
     description: 'Movie actors full names',
     examples: ['Pyotr Fyodorov', 'Nikolay Komlev'],
   })
+  @IsUUID('4', { each: true, message: 'Invalid uuid' })
   @IsArray()
-  @IsString({ each: true })
+  @IsString({ each: true, })
   actors: string[];
 }

@@ -11,7 +11,6 @@ import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 import { PG_ERRORS } from 'src/errors/sqlErrors';
 
-
 @Injectable()
 export class ActorsService {
   constructor(@InjectRepository(Actor) private ActorRepo: Repository<Actor>) {}
@@ -30,12 +29,19 @@ export class ActorsService {
   }
 
   findAll() {
-    return this.ActorRepo.find();
+    return this.ActorRepo.find({
+      relations: {
+        movies: true,
+      },
+    });
   }
 
   async findOne(id: string) {
     try {
-      const foundActor = await this.ActorRepo.findOneBy({ id });
+      const foundActor = await this.ActorRepo.findOne({
+        where: { id },
+        relations: { movies: true},
+      });
       if (!foundActor) {
         throw new NotFoundException('Actor does not exists');
       }

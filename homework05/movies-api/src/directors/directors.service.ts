@@ -33,12 +33,21 @@ export class DirectorsService {
   }
 
   findAll() {
-    return this.directorRepo.find();
+    return this.directorRepo.find({
+      relations: {
+        movies: true,
+      },
+    });
   }
 
   async findOne(id: string) {
     try {
-      const foundDirector = await this.directorRepo.findOneBy({ id });
+      const foundDirector = await this.directorRepo.findOne({
+        where: { id },
+        relations: {
+          movies: true,
+        },
+      });
       if (!foundDirector)
         throw new NotFoundException('director does not exists');
       return foundDirector;

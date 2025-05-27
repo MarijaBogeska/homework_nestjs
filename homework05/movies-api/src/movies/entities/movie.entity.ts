@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
@@ -110,12 +111,13 @@ export class Movie {
     type: 'string',
   })
   @ManyToOne(() => Director, (director) => director.movies)
+  @JoinColumn()
   director: Director;
 
   @ApiProperty({
     description: 'Movie actors ids',
   })
   @ManyToMany(() => Actor, (actor) => actor.movies)
-  @JoinTable({ name: 'movie_actors' })
+  @JoinTable({ name: 'movie_actors'})
   actors: Actor[];
 }

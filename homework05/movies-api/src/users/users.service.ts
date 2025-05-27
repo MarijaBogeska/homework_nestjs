@@ -19,9 +19,9 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const User = this.UserRepo.create(createUserDto);
-      await this.UserRepo.save(User);
-      return User;
+      const user = this.UserRepo.create(createUserDto);
+      await this.UserRepo.save(user);
+      return user;
     } catch (error) {
       if (error.code === DUPLICATE_CODE) {
         throw new BadRequestException('User already exists');
@@ -35,9 +35,20 @@ export class UsersService {
     return this.UserRepo.find();
   }
 
-  findOne(id: string) {
+  async findOneByEmail(email: string) {
     try {
-      const foundUser = this.UserRepo.findOneBy({ id });
+      const foundUser = await this.UserRepo.findOneBy({ email });
+      return foundUser;
+    } catch (error) {
+      if (error.code === INVALID_INPUT_CODE) {
+        throw new BadRequestException('Invalid input');
+      }
+      throw new NotFoundException(error.message);
+    }
+  }
+  async findOne(id: string) {
+    try {
+      const foundUser = await this.UserRepo.findOneBy({ id });
       if (!foundUser) {
         throw new NotFoundException('User does not exists');
       }
@@ -50,6 +61,20 @@ export class UsersService {
     }
   }
 
+  async saveRefreshToken(id: string, refreshToken: string) {
+    const user = await this.findOne(id);
+    user.refreshTokens.push(refreshToken);
+    await this.UserRepo.save(user);
+  }
+
+  async deleteRefreshToken(id: string, refreshToken: string) {
+    const user = await this.findOne(id);
+    user.refreshTokens = user.refreshTokens.filter(
+      (token) => token !== refreshToken,
+    );
+    await this.UserRepo.save(user);
+  }
+  
   async update(id: string, updateUserDto: UpdateUserDto) {
     const foundUser = await this.findOne(id);
     if (!foundUser) throw new NotFoundException('User does not exists');

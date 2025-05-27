@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -25,7 +26,12 @@ import {
 } from '@nestjs/swagger';
 import { Movie } from './entities/movie.entity';
 import { QueryMoviesDto } from './dto/query-movies.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/roles/roles.guard';
+import { Roles } from 'src/roles/roles.decorator';
+import { RoleType } from 'src/roles/role.enum';
 
+@UseGuards(AuthGuard, RolesGuard)
 @ApiTags('movies')
 @Controller('movies')
 export class MoviesController {
@@ -39,6 +45,7 @@ export class MoviesController {
   @ApiOperation({ summary: 'Endpoint that creates a movie' })
   @ApiResponse({ status: 201, description: 'Movie created successfully' })
   @HttpCode(201)
+  @Roles(RoleType.Admin)
   @Post()
   create(@Body() createMovieDto: CreateMovieDto) {
     return this.moviesService.create(createMovieDto);
@@ -89,6 +96,7 @@ export class MoviesController {
   @ApiNotFoundResponse({ description: 'Movie not found' })
   @ApiResponse({ status: 204, description: 'Movie updated successfully' })
   @HttpCode(204)
+  @Roles(RoleType.Admin)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
     return this.moviesService.update(id, updateMovieDto);
@@ -99,6 +107,7 @@ export class MoviesController {
   @ApiNotFoundResponse({ description: 'Movie not found' })
   @ApiResponse({ status: 204, description: 'Movie deleted successfully' })
   @HttpCode(204)
+  @Roles(RoleType.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.moviesService.remove(id);
