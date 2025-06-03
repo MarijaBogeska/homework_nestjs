@@ -14,6 +14,7 @@ import { QueryMoviesDto } from './dto/query-movies.dto';
 import { PG_ERRORS } from 'src/errors/sqlErrors';
 import { ActorsService } from 'src/actors/actors.service';
 import { DirectorsService } from 'src/directors/directors.service';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class MoviesService {
@@ -23,7 +24,7 @@ export class MoviesService {
     private directorsService: DirectorsService,
   ) {}
 
-  async create(createMovieDto: CreateMovieDto) {
+  async create(createMovieDto: CreateMovieDto, userEmail: User["email"]) {
     try {
       const { actors, director, ...movieDto } = createMovieDto;
       let mappedActors = await Promise.all(
@@ -37,6 +38,7 @@ export class MoviesService {
         ...movieDto,
         director: { id: director },
         actors: mappedActors,
+        createdBy: userEmail
       });
       return newMovie;
     } catch (error) {

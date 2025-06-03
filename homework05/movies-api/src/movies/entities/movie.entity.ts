@@ -106,6 +106,12 @@ export class Movie {
   })
   updated_at: Date;
 
+  @Column({
+    type: 'varchar',
+    default: 'admin',
+  })
+  createdBy: string;
+
   @ApiProperty({
     description: 'Movie director id',
     type: 'string',
@@ -118,6 +124,6 @@ export class Movie {
     description: 'Movie actors ids',
   })
   @ManyToMany(() => Actor, (actor) => actor.movies)
-  @JoinTable({ name: 'movie_actors'})
+  @JoinTable({ name: 'movie_actors' })
   actors: Actor[];
 }

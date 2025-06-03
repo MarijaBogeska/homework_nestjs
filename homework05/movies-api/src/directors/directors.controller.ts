@@ -54,7 +54,7 @@ export class DirectorsController {
     description: "The server couldn't fetch the directors",
   })
   @ApiResponse({ status: 200, description: 'directors found successfully' })
-  @Roles(RoleType.User)
+  @Roles(RoleType.Admin, RoleType.User)
   @Get()
   findAll() {
     return this.directorsService.findAll();
@@ -75,7 +75,7 @@ export class DirectorsController {
   })
   @ApiBadRequestResponse({ description: 'ID not found' })
   @HttpCode(200)
-  @Roles(RoleType.User)
+  @Roles(RoleType.Admin, RoleType.User)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.directorsService.findOne(id);

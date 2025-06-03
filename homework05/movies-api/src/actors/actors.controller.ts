@@ -35,13 +35,13 @@ export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
   @ApiBody({
-      required: true,
-      type: CreateActorDto,
-    })
-    @ApiBadRequestResponse({ description: 'Actor already exists' })
-    @ApiOperation({ summary: 'Endpoint that creates a Actor' })
-    @ApiResponse({ status: 201, description: 'Actor created successfully' })
-    @HttpCode(201)
+    required: true,
+    type: CreateActorDto,
+  })
+  @ApiBadRequestResponse({ description: 'Actor already exists' })
+  @ApiOperation({ summary: 'Endpoint that creates a Actor' })
+  @ApiResponse({ status: 201, description: 'Actor created successfully' })
+  @HttpCode(201)
   @Roles(RoleType.Admin)
   @Post()
   create(@Body() createActorDto: CreateActorDto) {
@@ -49,11 +49,12 @@ export class ActorsController {
   }
 
   @ApiOperation({ summary: 'Endpoint that fetches all actors' })
-    @ApiInternalServerErrorResponse({
-      description: "The server couldn't fetch the actors",
-    })
-    @ApiResponse({ status: 200, description: 'actors found successfully' })
-    @HttpCode(200)
+  @ApiInternalServerErrorResponse({
+    description: "The server couldn't fetch the actors",
+  })
+  @ApiResponse({ status: 200, description: 'actors found successfully' })
+  @HttpCode(200)
+  @Roles(RoleType.Admin, RoleType.User)
   @Get()
   findAll() {
     return this.actorsService.findAll();
@@ -74,6 +75,7 @@ export class ActorsController {
   })
   @ApiBadRequestResponse({ description: 'ID not found' })
   @HttpCode(200)
+  @Roles(RoleType.Admin, RoleType.User)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.actorsService.findOne(id);

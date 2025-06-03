@@ -9,6 +9,7 @@ import {
   HttpCode,
   Query,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -30,12 +31,19 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { Roles } from 'src/roles/roles.decorator';
 import { RoleType } from 'src/roles/role.enum';
+import { Request as Req } from 'express';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from 'src/users/users.service';
 
 @UseGuards(AuthGuard, RolesGuard)
 @ApiTags('movies')
 @Controller('movies')
 export class MoviesController {
-  constructor(private readonly moviesService: MoviesService) {}
+  constructor(
+    private readonly moviesService: MoviesService,
+    private jwtService: JwtService,
+    private usersService: UsersService,
+  ) {}
 
   @ApiBody({
     required: true,
@@ -47,8 +55,13 @@ export class MoviesController {
   @HttpCode(201)
   @Roles(RoleType.Admin)
   @Post()
-  create(@Body() createMovieDto: CreateMovieDto) {
-    return this.moviesService.create(createMovieDto);
+  async create(@Body() createMovieDto: CreateMovieDto, @Request() req: Req) {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) return '';
+    const { userId } = await this.jwtService.verifyAsync(token);
+    const user = await this.usersService.findOne(userId);
+
+    return this.moviesService.create(createMovieDto, user.email);
   }
 
   @ApiOperation({ summary: 'Endpoint that fetches all movies' })
