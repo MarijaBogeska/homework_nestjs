@@ -18,8 +18,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           synchronize: configService.get('NODE_ENV') === 'development',
           autoLoadEntities: true,
           //Allows us to see sql output sent to the databse in the console
-        //   logging: true,
-        //   logger: 'formatted-console',
+          //   logging: true,
+          //   logger: 'formatted-console',
         };
       },
     }),
